@@ -4,39 +4,33 @@
 </head>
 <body>
 <?php
+
+error_reporting(E_ALL);
+
+//phpinfo();
+
 if(isset($_REQUEST['ok'])){
-        echo "Submit OK";
 
-        $xml = new DOMDocument('1.0','UTF-8');
-        $xml->load('conso2.xml');
-
-
-        $rootTag = $xml->getElementsByTagName('conso')->item(0);
-        
-        echo "RootTag";
-
-        $dataTag = $xml->createElement('data');
-
-        echo "DataTag";
-
-        $SuezTag = $xml->createElement('Suez',$_REQUEST['Suez']);
-        $EDFTag = $xml->createElement('EDF',$_REQUEST['EDF']);
-        $GDFTag = $xml->createElement('GDF',$_REQUEST['GDF']);
-
-        echo "Append1";
-
-        $dataTag->appendChild($SuezTag);
-        $dataTag->appendChild($EDFTag);
-        $dataTag->appendChild($GDFTag);
-        
-        echo "Append2 : $dataTag";
-
-        $rootTag->appendChild($dataTag);
-
-        echo "Save";
-
-        $xml->save('conso2.xml');
+        $doc = new DOMDocument('1.0','UTF-8');
+		
+	// Create the element Conso
+	$xml_Conso = $doc->createElement("Conso");
+		
+	// Create the element for each form fields
+	$xml_Suez = $doc->createElement("Suez", $_REQUEST['Suez']);
+	$xml_EDF = $doc->createElement("EDF", $_REQUEST['EDF']);
+	$xml_GDF = $doc->createElement("GDF", $_REQUEST['GDF']);
+	
+	// Append our form elements to the main conso element
+	$xml_Conso->appendChild($xml_Suez);
+	$xml_Conso->appendChild($xml_EDF);
+	$xml_Conso->appendChild($xml_GDF);
+		
+	$doc->appendChild($xml_Conso);
+	
+	$doc->save("conso.xml");	
 }
+        
 
 ?>
 
