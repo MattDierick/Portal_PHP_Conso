@@ -4,46 +4,47 @@
 </head>
 <body>
 <?php
+error_reporting(E_ALL);
+//phpinfo();
 if(isset($_REQUEST['ok'])){
-        echo "Submit OK";
+        $doc = new DOMDocument('1.0','UTF-8');
 
-        $xml = new DOMDocument('1.0','UTF-8');
-        $xml->load('conso2.xml');
+        // Create the element Conso
+        $xml_Conso = $doc->createElement("Conso");
+        $compteur = "2912.11";
 
+        // Create the element for each form fields
+        $xml_Suez = $doc->createElement("Suez", $_REQUEST['Suez'] + $compteur);
+        $xml_EDF = $doc->createElement("EDF", $_REQUEST['EDF']);
+        $xml_GDF = $doc->createElement("GDF", $_REQUEST['GDF']);
 
-        $rootTag = $xml->getElementsByTagName('conso')->item(0);
-        
-        echo "RootTag";
+        // Append our form elements to the main conso element
+        $xml_Conso->appendChild($xml_Suez);
+        $xml_Conso->appendChild($xml_EDF);
+        $xml_Conso->appendChild($xml_GDF);
 
-        $dataTag = $xml->createElement('data');
+        $doc->appendChild($xml_Conso);
 
-        echo "DataTag";
+        $doc->save("conso.xml");
 
-        $SuezTag = $xml->createElement('Suez',$_REQUEST['Suez']);
-        $EDFTag = $xml->createElement('EDF',$_REQUEST['EDF']);
-        $GDFTag = $xml->createElement('GDF',$_REQUEST['GDF']);
-
-        echo "Append1";
-
-        $dataTag->appendChild($SuezTag);
-        $dataTag->appendChild($EDFTag);
-        $dataTag->appendChild($GDFTag);
-        
-        echo "Append2 : $dataTag";
-
-        $rootTag->appendChild($dataTag);
-
-        echo "Save";
-
-        $xml->save('conso2.xml');
+        $content = file_get_contents("http://<YOUR_FQDN>/core/api/jeeApi.php?apikey=<YOUR_API_KEY>&type=cmd&id=180");
 }
 
 ?>
 
 <form action="conso.php" method="post">
-Suez : <input type="text" name="Suez"/>
-EDF : <input type="text" name="EDF"/>
-GDF : <input type="text" name="GDF"/>
+Suez (format 00.00) :
+<br>
+<input type="integer" name="Suez"/>
+<br>
+EDF (format 00) :
+<br>
+<input type="integer" name="EDF"/>
+<br>
+GDF (format 00) :
+<br>
+<input type="integer" name="GDF"/>
+<br>
 <input type="submit" name="ok" value="add"/>
 </form>
 
