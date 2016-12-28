@@ -27,7 +27,8 @@ if(isset($_REQUEST['ok'])){
 
         $doc->save("conso.xml");
 
-        $content = file_get_contents("http://<your_fqdn>/core/api/jeeApi.php?apikey=<your_api-key>&type=cmd&id=180");
+        // This line is used to update the widget.
+        $content = file_get_contents("http://<your_fqdn>/core/api/jeeApi.php?apikey=<your_api-key>&type=cmd&id=<the_ID>");
 }
 
 ?>
