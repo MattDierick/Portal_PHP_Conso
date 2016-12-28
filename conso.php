@@ -27,7 +27,7 @@ if(isset($_REQUEST['ok'])){
 
         $doc->save("conso.xml");
 
-        $content = file_get_contents("http://<YOUR_FQDN>/core/api/jeeApi.php?apikey=<YOUR_API_KEY>&type=cmd&id=180");
+        $content = file_get_contents("http://<your_fqdn>/core/api/jeeApi.php?apikey=<your_api-key>&type=cmd&id=180");
 }
 
 ?>
